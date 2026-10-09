@@ -1,8 +1,20 @@
 import { checkCooldown } from './utils/cooldown.js'
-import { isAdmin } from './services/group.js'
+import { findParticipant, groupMetadata, isAdmin, participantNumbers } from './services/group.js'
+
+async function resolveOwner(ctx) {
+  if (ctx.isOwner) return true
+  if (!ctx.isGroup) return false
+  try {
+    const meta = await groupMetadata(ctx.client, ctx.jid)
+    const nums = participantNumbers(findParticipant(meta, ctx.senderJid))
+    return nums.some((n) => ctx.config.owners.includes(n))
+  } catch {
+    return false
+  }
+}
 
 export async function runGuards(ctx, def) {
-  if (def.ownerOnly && !ctx.isOwner) {
+  if (def.ownerOnly && !(await resolveOwner(ctx))) {
     await ctx.reply('owner only')
     return false
   }
@@ -19,7 +31,7 @@ export async function runGuards(ctx, def) {
       await ctx.reply('groups only')
       return false
     }
-    const ok = ctx.isOwner || (await isAdmin(ctx.client, ctx.jid, ctx.senderJid))
+    const ok = (await resolveOwner(ctx)) || (await isAdmin(ctx.client, ctx.jid, ctx.senderJid))
     if (!ok) {
       await ctx.reply('group admins only')
       return false

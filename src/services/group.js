@@ -51,6 +51,14 @@ function matchId(row, jid) {
   return row.jid === jid
 }
 
+export function findParticipant(meta, jid) {
+  return meta?.participants?.find((p) => matchId(p, jid)) || null
+}
+
+export function participantNumbers(row) {
+  return [row?.jid, row?.phoneNumber, row?.lid].filter(Boolean).map(jidToNumber)
+}
+
 export async function isAdmin(client, groupJid, participantJid) {
   const meta = await groupMetadata(client, groupJid)
   const row = meta.participants.find((p) => matchId(p, participantJid))
