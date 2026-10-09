@@ -1,0 +1,21 @@
+{
+  "name": "zapo-bot",
+  "version": "1.0.0",
+  "license": "ISC",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "dependencies": {
+    "@zapo-js/store-sqlite": "latest",
+    "better-sqlite3": "latest",
+    "dotenv": "latest",
+    "qrcode-terminal": "latest",
+    "zapo-js": "latest"
+  }
+}

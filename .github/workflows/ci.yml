@@ -1,0 +1,17 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: for f in $(find src commands -name '*.js'); do node --check "$f" || exit 1; done
+      - run: node --input-type=module -e "import { loadCommands, uniqueCommands } from './src/loader.js'; const r = await loadCommands('./commands'); console.log(uniqueCommands(r).length)"
+      - run: grep -rn '^\s*//' src commands && exit 1 || true
