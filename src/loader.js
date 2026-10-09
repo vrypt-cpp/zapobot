@@ -31,18 +31,18 @@ function normalize(def) {
   }
 }
 
-export async function loadCommands(commandsDir) {
-  const registry = new Map()
-  if (!fs.existsSync(commandsDir)) {
-    fs.mkdirSync(commandsDir, { recursive: true })
-    return registry
+async function importFile(file, fresh) {
+  const href = pathToFileURL(file).href
+  try {
+    const mod = await import(fresh ? `${href}?t=${Date.now()}` : href)
+    return { file, mod }
+  } catch (err) {
+    return { file, err }
   }
-  const files = walk(commandsDir)
-  const mods = await Promise.all(files.map((file) => import(pathToFileURL(file).href).then(
-    (mod) => ({ file, mod }),
-    (err) => ({ file, err })
-  )))
-  for (const { file, mod, err } of mods) {
+}
+
+function fillRegistry(registry, entries) {
+  for (const { file, mod, err } of entries) {
     if (err) {
       logger.error(`failed to load ${file}: ${err?.message || err}`)
       continue
@@ -62,6 +62,47 @@ export async function loadCommands(commandsDir) {
     }
   }
   return registry
+}
+
+export function bumpRegistry(registry) {
+  registry.rev = (registry.rev || 0) + 1
+  return registry.rev
+}
+
+export async function loadCommands(commandsDir) {
+  const registry = new Map()
+  if (!fs.existsSync(commandsDir)) {
+    fs.mkdirSync(commandsDir, { recursive: true })
+    return registry
+  }
+  const entries = await Promise.all(walk(commandsDir).map((file) => importFile(file, false)))
+  fillRegistry(registry, entries)
+  bumpRegistry(registry)
+  return registry
+}
+
+export async function reloadCommands(registry, commandsDir) {
+  if (!fs.existsSync(commandsDir)) return uniqueCommands(registry)
+  const entries = await Promise.all(walk(commandsDir).map((file) => importFile(file, true)))
+  registry.clear()
+  fillRegistry(registry, entries)
+  bumpRegistry(registry)
+  return uniqueCommands(registry)
+}
+
+export function purgeFile(registry, file) {
+  for (const [key, record] of registry) {
+    if (record.file === file) registry.delete(key)
+  }
+}
+
+export async function reloadFile(registry, file) {
+  purgeFile(registry, file)
+  if (fs.existsSync(file)) {
+    fillRegistry(registry, [await importFile(file, true)])
+  }
+  bumpRegistry(registry)
+  return uniqueCommands(registry)
 }
 
 export function uniqueCommands(registry) {

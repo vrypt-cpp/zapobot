@@ -89,6 +89,7 @@ All settings live in `.env`:
 | `WELCOME` | `true` | Greet new group members |
 | `MAX_RECONNECT` | `20` | Reconnect attempts before giving up |
 | `MAX_REPLY` | `0` | Max `eval`/`exec` reply chars, `0` = unlimited |
+| `HOT_RELOAD` | `true` | Auto-reload plugins on file change |
 
 ## Commands
 
@@ -96,7 +97,7 @@ All settings live in `.env`:
 | -------- | -------- |
 | `general` | `ping`, `help`, `echo`, `info`, `id`, `runtime` |
 | `group` | `tagall`, `hidetag`, `kick`, `add`, `promote`, `demote`, `subject`, `desc`, `open`, `close`, `link`, `leave` |
-| `owner` | `eval`, `exec`, `logout`, `bc` |
+| `owner` | `eval`, `exec`, `logout`, `bc`, `reload` |
 | `tools` | `calc`, `react` |
 
 Run `!help <name>` in chat for per-command usage. Owner shortcuts bypass the prefix: `$ <shell>` for `exec`, `=> <js>` or `> <js>` for `eval`.

@@ -28,7 +28,13 @@ async function typing(client, jid, fn) {
 }
 
 export function registerMessageHandler(client, registry) {
-  const triggers = triggerIndex(registry)
+  let triggerCache = null
+  function getTriggers() {
+    if (!triggerCache || triggerCache.ref !== registry || triggerCache.rev !== registry.rev) {
+      triggerCache = { ref: registry, rev: registry.rev, index: triggerIndex(registry) }
+    }
+    return triggerCache.index
+  }
   client.on('message_send', (event) => {
     if (event?.id) markEcho(event.id)
   })
@@ -42,7 +48,7 @@ export function registerMessageHandler(client, registry) {
       let def = null
       let args = []
       let prefix = null
-      const hit = triggers.find(([t]) => raw.startsWith(t) && raw.slice(t.length).trim())
+      const hit = getTriggers().find(([t]) => raw.startsWith(t) && raw.slice(t.length).trim())
       if (hit) {
         def = hit[1]
         prefix = hit[0]

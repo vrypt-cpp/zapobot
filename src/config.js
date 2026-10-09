@@ -31,7 +31,8 @@ export const config = {
   autoTyping: toBool(process.env.AUTO_TYPING, true),
   welcome: toBool(process.env.WELCOME, true),
   maxReconnect: toCount(process.env.MAX_RECONNECT, 20),
-  maxReply: toCount(process.env.MAX_REPLY, 0)
+  maxReply: toCount(process.env.MAX_REPLY, 0),
+  hotReload: toBool(process.env.HOT_RELOAD, true)
 }
 if (!config.prefixes.length) config.prefixes = ['!']
 config.prefixes.sort((a, b) => b.length - a.length)

@@ -12,6 +12,7 @@ import { registerAuth } from './auth.js'
 import { registerConnection } from './connection.js'
 import { loadCommands, uniqueCommands } from './loader.js'
 import { registerHandler } from './handler.js'
+import { watchCommands } from './watcher.js'
 
 const root = path.dirname(fileURLToPath(import.meta.url))
 const commandsDir = path.join(root, '..', 'commands')
@@ -23,6 +24,7 @@ const registry = await loadCommands(commandsDir)
 registerAuth(client)
 registerConnection(client)
 registerHandler(client, registry)
+if (config.hotReload) watchCommands(registry, commandsDir)
 
 logger.info(`${config.botName} loaded ${uniqueCommands(registry).length} commands, prefixes ${config.prefixes.join(' ')}`)
 
