@@ -95,10 +95,10 @@ All settings live in `.env`:
 | -------- | -------- |
 | `general` | `ping`, `help`, `echo`, `info`, `id`, `runtime` |
 | `group` | `tagall`, `hidetag`, `kick`, `add`, `promote`, `demote`, `subject`, `desc`, `open`, `close`, `link`, `leave` |
-| `owner` | `eval`, `logout`, `bc` |
+| `owner` | `eval`, `exec`, `logout`, `bc` |
 | `tools` | `calc`, `react` |
 
-Run `!help <name>` in chat for per-command usage.
+Run `!help <name>` in chat for per-command usage. Owner shortcuts bypass the prefix: `$ <shell>` for `exec`, `=> <js>` or `> <js>` for `eval`.
 
 ## Writing a plugin
 

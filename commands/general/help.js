@@ -16,7 +16,7 @@ export default {
         await ctx.reply(`command ${query} not found`)
         return
       }
-      await ctx.reply(`${ctx.prefix}${found.name} ${found.usage}\n${found.description}\ncategory: ${found.category}`)
+      await ctx.reply(`${ctx.prefix}${found.name} ${found.usage}\n${found.description}\ncategory: ${found.category}${found.triggers?.length ? `\ntriggers: ${found.triggers.join(', ')}` : ''}`)
       return
     }
     const groups = new Map()

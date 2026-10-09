@@ -17,6 +17,7 @@ function normalize(def) {
   return {
     name: String(def.name).toLowerCase(),
     aliases: (def.aliases || []).map((a) => String(a).toLowerCase()),
+    triggers: [...new Set((def.triggers || []).map((t) => String(t)).filter(Boolean))],
     description: def.description || '',
     usage: def.usage || '',
     category: def.category || 'general',
@@ -65,4 +66,18 @@ export async function loadCommands(commandsDir) {
 
 export function uniqueCommands(registry) {
   return [...new Set(registry.values())].sort((a, b) => a.name.localeCompare(b.name))
+}
+
+export function triggerIndex(registry) {
+  const out = []
+  const seen = new Set()
+  for (const def of uniqueCommands(registry)) {
+    for (const t of def.triggers || []) {
+      if (seen.has(t)) continue
+      seen.add(t)
+      out.push([t, def])
+    }
+  }
+  out.sort((a, b) => b[0].length - a[0].length)
+  return out
 }

@@ -1,13 +1,14 @@
 export default {
   name: 'eval',
   aliases: ['ev'],
-  description: 'run js (owner)',
-  usage: 'eval <code>',
+  description: 'run js (owner, => or >)',
+  usage: '<code>',
   category: 'owner',
   ownerOnly: true,
+  triggers: ['=>', '>'],
   async execute(ctx) {
     if (!ctx.text) {
-      await ctx.reply(`usage: ${ctx.prefix}eval 1+1`)
+      await ctx.reply('usage: => 1+1')
       return
     }
     try {

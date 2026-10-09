@@ -29,7 +29,7 @@ Success = `loaded N commands` + `socket open` lines. Missing `.env` is fine (dot
 
 ## Plugin contract
 
-`commands/<category>/<name>.js` exports default `{ name, aliases?, description, usage?, category, cooldown?, ownerOnly?, groupOnly?, privateOnly?, adminOnly?, botAdmin?, execute(ctx) }`. `ctx` (`src/context.js`) gives `client, event, jid, senderJid, senderAltJid, args, text, prefix, reply, send, react, isGroup, isOwner, registry`.
+`commands/<category>/<name>.js` exports default `{ name, aliases?, triggers?, description, usage?, category, cooldown?, ownerOnly?, groupOnly?, privateOnly?, adminOnly?, botAdmin?, execute(ctx) }`. `triggers?` are prefix-less symbols matched longest-first (e.g. `$`, `=>`). `ctx` (`src/context.js`) gives `client, event, jid, senderJid, senderAltJid, args, text, prefix, reply, send, react, isGroup, isOwner, registry`.
 
 ## zapo specifics
 
