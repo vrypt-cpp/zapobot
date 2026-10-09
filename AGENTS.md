@@ -31,6 +31,10 @@ Success = `loaded N commands` + `socket open` lines. Missing `.env` is fine (dot
 
 `commands/<category>/<name>.js` exports default `{ name, aliases?, triggers?, description, usage?, category, cooldown?, ownerOnly?, groupOnly?, privateOnly?, adminOnly?, botAdmin?, execute(ctx) }`. `triggers?` are prefix-less symbols matched longest-first (e.g. `$`, `=>`). `ctx` (`src/context.js`) gives `client, event, jid, senderJid, senderAltJid, args, text, prefix, reply, send, react, isGroup, isOwner, registry`.
 
+## Commits
+
+Conventional Commits: `feat:`, `fix:`, `docs:`, `refactor:`, `perf:`, `chore:`. Imperative subject, lowercase, no trailing period, max ~72 chars. Examples: `feat: add prefix-less triggers with exec command`, `fix: eval circular JSON crash with util.inspect`. One logical change per commit.
+
 ## zapo specifics
 
 - No auto-reconnect in the library — `src/connection.js` owns the backoff loop; `isLogout` means stop, do not retry.
