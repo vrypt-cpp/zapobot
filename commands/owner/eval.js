@@ -1,3 +1,5 @@
+import { inspect } from 'node:util'
+
 export default {
   name: 'eval',
   aliases: ['ev'],
@@ -14,7 +16,7 @@ export default {
     try {
       const fn = new Function('ctx', `return (async () => { return (${ctx.text}) })()`)
       let out = await fn(ctx)
-      if (typeof out !== 'string') out = JSON.stringify(out, null, 2) ?? String(out)
+      if (typeof out !== 'string') out = inspect(out, { depth: 4, maxArrayLength: 50, breakLength: 120 })
       await ctx.reply(String(out).slice(0, 1500))
     } catch (err) {
       await ctx.reply(`error: ${err?.message || err}`)
