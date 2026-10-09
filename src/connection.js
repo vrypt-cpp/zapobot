@@ -9,7 +9,7 @@ export function registerConnection(client, onOpen) {
     if (reconnecting) return
     reconnecting = true
     try {
-      if (attempt >= config.maxReconnect) {
+      if (config.maxReconnect > 0 && attempt >= config.maxReconnect) {
         logger.error(`stopping reconnect after ${attempt}x`)
         return
       }

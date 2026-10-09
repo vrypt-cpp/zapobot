@@ -1,4 +1,5 @@
 import { jidToNumber } from '../utils/jid.js'
+import { quotedContext } from '../utils/text.js'
 
 const cache = new Map()
 const pending = new Map()
@@ -72,7 +73,7 @@ export async function isBotAdmin(client, groupJid) {
 }
 
 export function resolveTarget(ctx) {
-  const info = ctx.event.message?.extendedTextMessage?.contextInfo
+  const info = quotedContext(ctx.event.message)
   if (info?.participant) return info.participant
   if (info?.mentionedJid?.[0]) return info.mentionedJid[0]
   const raw = (ctx.args[0] || '').replace(/[@+\s-]/g, '')

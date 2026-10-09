@@ -1,17 +1,9 @@
 import { jidToNumber } from '../../src/utils/jid.js'
+import { quotedContext } from '../../src/utils/text.js'
 import { isEcho } from '../../src/services/echo.js'
 
-function quotedInfo(message) {
-  return (
-    message?.extendedTextMessage?.contextInfo ??
-    message?.imageMessage?.contextInfo ??
-    message?.videoMessage?.contextInfo ??
-    null
-  )
-}
-
 function quotedTarget(ctx) {
-  const info = quotedInfo(ctx.event.message)
+  const info = quotedContext(ctx.event.message)
   if (!info?.stanzaId) return null
   const me = ctx.client.getCredentials()?.meJid
   const mine =

@@ -43,6 +43,7 @@ export function registerMessageHandler(client, registry) {
       const jid = event?.key?.remoteJid
       if (!jid || isNewsletterJid(jid) || isStatusJid(jid)) return
       if (event.key.fromMe && isEcho(event.key.id)) return
+      if (config.autoRead) void client.message.sendReceipt(event, { type: 'read' }).catch(() => {})
       const raw = extractText(event.message)?.trim()
       if (!raw) return
       let def = null
@@ -62,7 +63,6 @@ export function registerMessageHandler(client, registry) {
         prefix = parsed.prefix
         args = rest
       }
-      if (config.autoRead) void client.message.sendReceipt(event, { type: 'read' }).catch(() => {})
       const ctx = buildContext(client, event, config, {
         command: def.name,
         args,

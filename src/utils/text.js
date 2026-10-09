@@ -10,6 +10,13 @@ export function extractText(message) {
   )
 }
 
-export function extractQuoted(message) {
-  return message?.extendedTextMessage?.contextInfo?.quotedMessage || null
+export function quotedContext(message) {
+  if (!message) return null
+  return (
+    message.extendedTextMessage?.contextInfo ??
+    message.imageMessage?.contextInfo ??
+    message.videoMessage?.contextInfo ??
+    message.documentMessage?.contextInfo ??
+    null
+  )
 }
