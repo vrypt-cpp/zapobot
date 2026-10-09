@@ -23,6 +23,7 @@ export default {
     }
     const { err, stdout, stderr } = await run(ctx.text)
     const out = `${stdout || ''}${stderr || ''}`.trim() || (err ? `error: ${err.message}` : '(no output)')
-    await ctx.reply(out.slice(0, 1500))
+    const limit = ctx.config.maxReply > 0 ? ctx.config.maxReply : undefined
+    await ctx.reply(out.slice(0, limit))
   }
 }

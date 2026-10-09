@@ -88,6 +88,7 @@ All settings live in `.env`:
 | `AUTO_TYPING` | `true` | Show typing during commands |
 | `WELCOME` | `true` | Greet new group members |
 | `MAX_RECONNECT` | `20` | Reconnect attempts before giving up |
+| `MAX_REPLY` | `0` | Max `eval`/`exec` reply chars, `0` = unlimited |
 
 ## Commands
 
